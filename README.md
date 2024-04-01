@@ -21,5 +21,5 @@ curl --location --request POST '127.0.0.1:8080/withdraw/approve/create' \
 }'
 
 ### get withdraw claim
-curl --location --request GET 'http://127.0.0.1:8080/withdraw/claim/1' 
+curl --location --request GET '127.0.0.1:8080/withdraw/claim/1' 
 
