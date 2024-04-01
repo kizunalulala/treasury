@@ -3,11 +3,28 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 	"treasury/models"
 	"treasury/services"
 )
 
-func claimHandler(c *gin.Context) {
+func claimGetHandler(c *gin.Context) {
+	id := c.Param("id")
+	idInt, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	ctx := c.Request.Context()
+	res, err := services.ClaimInfo(ctx, idInt)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"claim": res})
+}
+
+func claimCreateHandler(c *gin.Context) {
 	req := new(models.ClaimRequest)
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -18,7 +35,7 @@ func claimHandler(c *gin.Context) {
 		return
 	}
 	ctx := c.Request.Context()
-	err := services.Claim(ctx, req)
+	err := services.ClaimCreate(ctx, req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		return
@@ -26,7 +43,7 @@ func claimHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Claim received"})
 }
 
-func approveHandler(c *gin.Context) {
+func approveCreateHandler(c *gin.Context) {
 	req := new(models.ApproveRequest)
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -37,7 +54,7 @@ func approveHandler(c *gin.Context) {
 		return
 	}
 	ctx := c.Request.Context()
-	err := services.Approve(ctx, req)
+	err := services.ApproveCreate(ctx, req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		return

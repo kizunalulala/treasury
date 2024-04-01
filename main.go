@@ -27,8 +27,9 @@ func main() {
 
 	// router
 	r := gin.Default()
-	r.POST("/withdraw/claim/create", claimHandler)
-	r.POST("/withdraw/approve/create", approveHandler)
+	r.GET("/withdraw/claim/:id", claimGetHandler)
+	r.POST("/withdraw/claim/create", claimCreateHandler)
+	r.POST("/withdraw/approve/create", approveCreateHandler)
 	r.Run()
 
 }

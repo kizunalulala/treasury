@@ -16,7 +16,7 @@ const (
 	contractAddrStr = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
 )
 
-func Approve(ctx context.Context, req *models.ApproveRequest) error {
+func ApproveCreate(ctx context.Context, req *models.ApproveRequest) error {
 	manager, ok := mock.ManagerData[req.ApproverID]
 	if !ok {
 		return errors.New("invalid approver")
