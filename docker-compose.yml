@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  treasury_db:
+    image: mysql:latest
+    container_name: treasury_db
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: treasury_db
+    ports:
+      - "3306:3306"
+
+  treasury:
+     build: .
+     container_name: treasury
+     depends_on:
+       - treasury_db
+     environment:
+       DB_HOST: treasury_db
+       DB_PORT: 3306
+       DB_USER: root
+       DB_PASSWORD: password
+       DB_NAME: treasury_db
+     ports:
+       - "8080:8080"
+
+#  anvil:
+#    image: foundry:latest
+#    container_name: anvil
+#    entrypoint: ["anvil"]
+#    ports:
+#      - "8545:8545"
